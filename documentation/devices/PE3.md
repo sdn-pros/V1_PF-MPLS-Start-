@@ -20,7 +20,6 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router Traffic-Engineering](#router-traffic-engineering)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
@@ -125,12 +124,11 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_PE4_Ethernet1 | routed | - | 192.168.102.44/31 | default | 1497 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_P3_Ethernet2 | routed | - | 192.168.102.37/31 | default | 1497 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_P4_Ethernet2 | routed | - | 192.168.102.41/31 | default | 1497 | False | - | - |
-| Ethernet4 | SITE2 | routed | - | 10.1.5.5/31 | VRF_A | - | False | - | - |
-| Ethernet6 | P2P_LINK_TO_RR6_Ethernet6 | routed | - | 192.168.102.48/31 | default | 1497 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_RR5_Ethernet10 | routed | - | 192.168.102.46/31 | default | 1497 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_PE4_Ethernet1 | routed | - | 192.168.102.44/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_P3_Ethernet2 | routed | - | 192.168.102.37/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_P4_Ethernet2 | routed | - | 192.168.102.41/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_LINK_TO_RR6_Ethernet6 | routed | - | 192.168.102.48/31 | default | 1500 | False | - | - |
+| Ethernet8 | P2P_LINK_TO_RR5_Ethernet10 | routed | - | 192.168.102.46/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -149,7 +147,7 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_PE4_Ethernet1
    no shutdown
-   mtu 1497
+   mtu 1500
    no switchport
    ip address 192.168.102.44/31
    mpls ip
@@ -162,7 +160,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_P3_Ethernet2
    no shutdown
-   mtu 1497
+   mtu 1500
    no switchport
    ip address 192.168.102.37/31
    mpls ip
@@ -175,7 +173,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_P4_Ethernet2
    no shutdown
-   mtu 1497
+   mtu 1500
    no switchport
    ip address 192.168.102.41/31
    mpls ip
@@ -185,17 +183,10 @@ interface Ethernet3
    isis hello padding
    isis network point-to-point
 !
-interface Ethernet4
-   description SITE2
-   no shutdown
-   no switchport
-   vrf VRF_A
-   ip address 10.1.5.5/31
-!
 interface Ethernet6
    description P2P_LINK_TO_RR6_Ethernet6
    no shutdown
-   mtu 1497
+   mtu 1500
    no switchport
    ip address 192.168.102.48/31
    mpls ip
@@ -208,7 +199,7 @@ interface Ethernet6
 interface Ethernet8
    description P2P_LINK_TO_RR5_Ethernet10
    no shutdown
-   mtu 1497
+   mtu 1500
    no switchport
    ip address 192.168.102.46/31
    mpls ip
@@ -286,7 +277,6 @@ ip virtual-router mac-address 02:1c:73:00:dc:00
 | --- | --------------- |
 | default | True |
 | MGMT | True |
-| VRF_A | True |
 
 #### IP Routing Device Configuration
 
@@ -294,7 +284,6 @@ ip virtual-router mac-address 02:1c:73:00:dc:00
 !
 ip routing
 ip routing vrf MGMT
-ip routing vrf VRF_A
 ```
 
 ### IPv6 Routing
@@ -305,7 +294,6 @@ ip routing vrf VRF_A
 | --- | --------------- |
 | default | False |
 | MGMT | false |
-| VRF_A | false |
 
 ### Static Routes
 
@@ -320,16 +308,6 @@ ip routing vrf VRF_A
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.0.1
-```
-
-### Router Traffic-Engineering
-
-#### Router Traffic Engineering Device Configuration
-
-```eos
-!
-router traffic-engineering
-   router-id ipv4 192.168.101.23
 ```
 
 ### Router ISIS
@@ -384,9 +362,6 @@ router isis CORE
    !
    segment-routing mpls
       no shutdown
-   traffic-engineering
-     no shutdown
-     is-type level-1
 ```
 
 ### Router BGP
@@ -423,7 +398,6 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.101.35 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 192.168.101.36 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
-| 10.1.5.4 | 65201 | VRF_A | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -439,12 +413,6 @@ ASN Notation: asplain
 | Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
 | MPLS-OVERLAY-PEERS | True | - | - | - | - |
-
-#### Router BGP VRFs
-
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| VRF_A | 192.168.101.23:19 | connected |
 
 #### Router BGP Device Configuration
 
@@ -473,17 +441,6 @@ router bgp 65001
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
-   !
-   vrf VRF_A
-      rd 192.168.101.23:19
-      route-target import vpn-ipv4 65000:19
-      route-target export vpn-ipv4 65000:19
-      router-id 192.168.101.23
-      neighbor 10.1.5.4 remote-as 65201
-      redistribute connected
-      !
-      address-family ipv4
-         neighbor 10.1.5.4 activate
 ```
 
 ## BFD
@@ -557,13 +514,10 @@ mpls ip
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | enabled |
-| VRF_A | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
-!
-vrf instance VRF_A
 ```

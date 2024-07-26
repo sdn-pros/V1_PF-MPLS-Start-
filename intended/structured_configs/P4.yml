@@ -41,9 +41,8 @@ router_isis:
   advertise:
     passive_only: false
   segment_routing_mpls:
-    router_id: 192.168.0.101.4
+    router_id: 192.168.101.4
     enabled: true
-  eos_cli: "traffic-engineering\n  no shutdown\n  is-type level-1"
 mpls:
   ip: true
 ethernet_interfaces:
@@ -54,16 +53,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P5_Ethernet5
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.33/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet1
   peer: P6
   peer_interface: Ethernet3
@@ -71,16 +69,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P6_Ethernet3
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.35/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet2
   peer: PE3
   peer_interface: Ethernet3
@@ -88,16 +85,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PE3_Ethernet3
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.40/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet3
   peer: PE4
   peer_interface: Ethernet3
@@ -105,19 +101,14 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PE4_Ethernet3
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.42/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 metadata:
   platform: vEOS-lab
-router_traffic_engineering:
-  segment_routing: null
-  router_id:
-    ipv4: 192.168.101.4

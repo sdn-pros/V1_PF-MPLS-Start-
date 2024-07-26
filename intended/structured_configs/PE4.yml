@@ -38,28 +38,6 @@ router_bgp:
     peer_group: MPLS-OVERLAY-PEERS
     peer: RR6
     description: RR6
-  vrfs:
-  - name: VRF_A
-    router_id: 192.168.101.24
-    rd: 192.168.101.24:19
-    route_targets:
-      import:
-      - address_family: vpn-ipv4
-        route_targets:
-        - '65000:19'
-      export:
-      - address_family: vpn-ipv4
-        route_targets:
-        - '65000:19'
-    redistribute_routes:
-    - source_protocol: connected
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 10.1.5.6
-        activate: true
-    neighbors:
-    - ip_address: 10.1.5.6
-      remote_as: '65201'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -78,9 +56,6 @@ spanning_tree:
     priority: 32768
 vrfs:
 - name: MGMT
-  ip_routing: true
-- name: VRF_A
-  tenant: TENANT_A
   ip_routing: true
 management_api_http:
   enable_vrfs:
@@ -107,9 +82,8 @@ router_isis:
   advertise:
     passive_only: false
   segment_routing_mpls:
-    router_id: 192.168.0.101.24
+    router_id: 192.168.101.24
     enabled: true
-  eos_cli: "traffic-engineering\n  no shutdown\n  is-type level-1"
 mpls:
   ip: true
 router_bfd:
@@ -125,16 +99,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P3_Ethernet3
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.39/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet3
   peer: P4
   peer_interface: Ethernet3
@@ -142,16 +115,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_P4_Ethernet3
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.43/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet1
   peer: PE3
   peer_interface: Ethernet1
@@ -159,16 +131,15 @@ ethernet_interfaces:
   description: P2P_LINK_TO_PE3_Ethernet1
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.45/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-  eos_cli: traffic-engineering
 - name: Ethernet8
   peer: RR5
   peer_interface: Ethernet13
@@ -176,12 +147,12 @@ ethernet_interfaces:
   description: P2P_LINK_TO_RR5_Ethernet13
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.50/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
@@ -192,28 +163,17 @@ ethernet_interfaces:
   description: P2P_LINK_TO_RR6_Ethernet7
   type: routed
   shutdown: false
-  mtu: 1497
+  mtu: 1500
   ip_address: 192.168.102.52/31
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
-  isis_hello_padding: true
+  isis_hello_padding: false
   isis_circuit_type: level-1
   mpls:
     ip: true
-- name: Ethernet4
-  peer_type: l3_interface
-  ip_address: 10.1.5.7/31
-  shutdown: false
-  description: SITE2
-  type: routed
-  vrf: VRF_A
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 02:1c:73:00:dc:00
 metadata:
   platform: vEOS-lab
-router_traffic_engineering:
-  segment_routing: null
-  router_id:
-    ipv4: 192.168.101.24
