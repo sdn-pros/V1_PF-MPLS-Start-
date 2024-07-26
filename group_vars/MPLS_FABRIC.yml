@@ -9,6 +9,7 @@ custom_structured_configuration_prefix: "custom_"
 
 bgp_mesh_pes: false
 
+# IS-IS parameters
 # isis_ti_lfa:
 #   enabled: true
 #   protection: link
@@ -18,6 +19,13 @@ isis_default_is_type: level-1
 isis_default_circuit_type: level-1
 isis_default_metric: 5
 isis_advertise_passive_only: false
+isis_hello_padding: false
+
+#Add this interface to underlay routing protocol | Optional
+include_in_underlay_protocol: true
+
+# MPLS Parameters
+mpls_ip:  true
 
 # RD/RT Format
 overlay_rd_type:
